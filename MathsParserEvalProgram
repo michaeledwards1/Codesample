@@ -1,0 +1,123 @@
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptEngine;
+
+import java.io.*; 
+import java.lang.*; 
+import java.math.*; 
+import java.util.*;
+
+//******************************** 
+// Maths ParserEvalProgram() 
+// 
+// Author: Michael Edwards 
+//  
+// Date: 15th December 2014 
+// 
+//*******************************
+
+
+public class MathsParserEvalProgram { 
+   public static int ON = 1; 
+   public static int OFF = 0; 
+   
+   // Flags 
+   
+  public static int counter = OFF; 
+  
+  public static int debugflag = OFF; 
+  
+  public static void DisplayIO(String Printstring) 
+  { 
+     counter++; 
+     System.out.println(Printstring); 
+  }  
+  
+  public static void SetDebugFlag() 
+  { 
+     counter++; 
+     debugflag = ON; 
+  } 
+  
+  public static void UnSetDebugFlag() 
+  { 
+     counter++; 
+     debugflag = OFF; 
+  } 
+  
+  
+  
+  public static void process_Debug() throws Exception 
+  { 
+       DisplayIO("Here...Debug"); 
+       int index = 0; 
+       String[] tests = { "3","3 + 7","6 + 6 / 2", "7 * 3", "6 * 2 + 8 / 2 - 4"}; 
+       String TEST1 = "3"; 
+       String TEST2 = "3 + 7"; 
+       String TEST3 = "6 + 6 / 2"; 
+       String TEST4 = "7 + 3"; 
+       String TEST5 = "6 * 2 + 8 / 2 - 4"; 
+       String teststring = ""; 
+       String IO_buffer = ""; 
+       float result = 0; 
+       
+       int bufferlength = 0; 
+       
+       ScriptEngineManager IOmgr = new ScriptEngineManager(); 
+       ScriptEngine engine = IOmgr.getEngineByName("JavaScript"); 
+       
+       
+       if (debugflag==ON){ 
+           DisplayIO("Here...Beginning Processing"); 
+           
+           // Test Process 
+           int count=0; 
+           // Print out test strings 
+           
+           while (count<5){ 
+               switch (count) { 
+               case 0: IO_buffer = TEST1;
+               break;
+               case 1: IO_buffer = TEST2; 
+               break; 
+               case 2: IO_buffer = TEST3; 
+               break; 
+               case 3: IO_buffer = TEST4; 
+               break; 
+               case 4: IO_buffer = TEST5; 
+               break; 
+               }
+               
+               System.out.println("The result of test:"); 
+               System.out.println(engine.eval(IO_buffer)); 
+               count++; 
+          } 
+      } 
+  } 
+  
+  public static void main(String[] args) throws Exception 
+  {
+         SetDebugFlag(); // OR UnSetDebugFlag for Input Prompt
+         String buffer = new String(""); 
+         
+         ScriptEngineManager IOmgr = new ScriptEngineManager(); 
+         ScriptEngine engine = IOmgr.getEngineByName("JavaScript"); 
+         
+         if (!(debugflag == ON)){ 
+         
+         DisplayIO("Enter Maths Expression: "); 
+         
+         //Create input variable 
+         BufferedReader in; 
+         in = new BufferedReader(new InputStreamReader(System.in)); 
+         buffer = in.readLine(); 
+         
+         String datastring = buffer; 
+         
+         System.out.println(engine.eval(datastring)); 
+         
+       } else if (debugflag == ON){ 
+         //Do Tests in Debug Mode only 
+         process_Debug(); 
+       } 
+  } 
+}
